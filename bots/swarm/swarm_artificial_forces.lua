@@ -1,4 +1,4 @@
-package.path = "~\\common\\?.lua;~\\swarm\\?.lua;"..package.path
+package.path = "~\\support\\?.lua;~\\swarm\\?.lua;"..package.path
 local vmath = require "vectormath"
 local math = require "math"
 
