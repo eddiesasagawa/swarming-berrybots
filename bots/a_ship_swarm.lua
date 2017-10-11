@@ -4,7 +4,7 @@ math = require "math"
 vmath = require "vectormath"
 map = require "map"
 
-ShipSwarmBehavior = require "swarm_behavior"
+ShipSwarmBehavior = require "swarm_naive"
 
 ship_type = ShipSwarmBehavior
 
