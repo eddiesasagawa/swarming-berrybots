@@ -11,6 +11,20 @@ local ShipArtificialForces = {}
 		Formation Control of Robotic Swarm Using Bounded Artificial Forces
 		by ??? et al.
 ]]--
+ShipArtificialForces.formation = {
+	"radius"=20.0,
+	"control_points"={{0,0}},
+	"dz"=1,
+	"boundary"={{}}
+}
+
+function ShipArtificialForces.discretize_formation()
+	--[[ Easiest method may be to start from the control points and expand outwards until we find the boundaries.
+		Also only want to do this once for all instances..
+	]]--
+	-- Since we are only doing a circle for now, we can just discretize mathematically.
+
+end
 
 function ShipArtificialForces.new(ship, dbg, map)
 	--[[ PRIVATE VARIABLES ]]--
@@ -35,17 +49,25 @@ function ShipArtificialForces.new(ship, dbg, map)
 	self.dz = 1 -- unit length for discretization of shape integral
 	self.zx_c = 0 -- target shape center x
 	self.zy_c = 0 -- target shape center y
+	self.zr = 20.0
 
 	--[[ PRIVATE METHODS ]]--
-	local function is_in_formation()
-		for i, z in pairs(self.target_shape) do
-			local vx_to_z, vy_to_z, _ = vmath.unitvec(self.ship:x(), ship.ship:y(), z[1], z[2])
-			local target_angle, _ = vmath.cart2polar(z[3]-vx_to_z, z[4]-vy_to_z)
-			if math.abs(target_angle) < math.pi/2.0 then
-				return true
-			end
-		end
+	local function dist_to_shape()
+		-- a circle for now
+		-- use implicit surfaces
+		dist = vmath.distance(self.ship:x(), self.ship:y(), self.zx_c, self.zy_c) - self.zr -- radius
+		return dist
 	end
+
+	-- local function is_in_formation()
+	-- 	for i, z in pairs(self.target_shape) do
+	-- 		local vx_to_z, vy_to_z, _ = vmath.unitvec(self.ship:x(), self.ship:y(), z[1], z[2])
+	-- 		local target_angle, _ = vmath.cart2polar(z[3]-vx_to_z, z[4]-vy_to_z)
+	-- 		if math.abs(target_angle) < math.pi/2.0 then
+	-- 			return true
+	-- 		end
+	-- 	end
+	-- end
 
 	-- All force compoenents are of the form F(k, beta) = k*exp(-beta*x)
 	local function F_i_a()
